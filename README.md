@@ -4,4 +4,4 @@ This repo contains API used in my [voice assistant](https://github.com/Artori-ku
 
 APIs include:
 - CRUD operations for personal schedule. Data are stored using MySql
-- News extractor (experimental)
+- Speaker Verification
