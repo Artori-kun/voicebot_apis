@@ -142,3 +142,8 @@ class ScheduleInstanceException(models.Model):
     class Meta:
         managed = True
         db_table = 'ScheduleInstanceException'
+
+class user_feature(models.Model):
+    username = models.CharField(max_length=20, blank=False, default='')
+    vector = models.CharField(max_length=200,blank=False, default='')
+

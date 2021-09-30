@@ -16,6 +16,7 @@ Including another URLconf
 # from django.contrib import admin
 from django.urls import path, include
 from .views.viewsets import *
+from .views.user_feature_views import tutorial_detail, tutorial_list, login, registration_view
 from rest_framework import routers
 
 app_name = "main"
@@ -28,5 +29,9 @@ router.register('schedule-exceptions', ScheduleInstanceExceptionViewSet, 'schedu
 router.register('reminder-exceptions', ReminderInstanceExceptionViewSet, 'reminder-exceptions')
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path(r'^api/user_feature$', tutorial_list),
+    path(r'^api/user_feature/(?P<pk>[0-9]+)$', tutorial_detail),
+    path(r'^api/user_feature/login$', login),
+    path(r'^api/user_feature/register', registration_view),
 ]

@@ -1,3 +1,8 @@
 api_venv/
 .idea/
 **/__pycache__/
+django_apis/core/data/
+django_apis/core/saved_feautures/
+model000000440.model/
+data/
+saved_feautures/

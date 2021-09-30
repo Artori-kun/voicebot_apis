@@ -119,3 +119,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
+
+
+class User_featureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user_feature
+        fields = ('id', 'username', 'vector')
+
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user_feature
+        fields = ('id', 'username', 'vector')
+
+    def save(self):
+        account = user_feature(
+            id=self.validated_data['id'],
+            user_name=self.validated_data['username'],
+            vector=self.validated_data['vector']
+        )
+        account.save()
+        return account
