@@ -15,6 +15,7 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from .views.viewsets import *
 from .views.user_feature_views import tutorial_detail, tutorial_list, login, registration_view
 from rest_framework import routers
@@ -30,8 +31,8 @@ router.register('reminder-exceptions', ReminderInstanceExceptionViewSet, 'remind
 
 urlpatterns = [
     path('', include(router.urls)),
-    path(r'^api/user_feature$', tutorial_list),
-    path(r'^api/user_feature/(?P<pk>[0-9]+)$', tutorial_detail),
-    path(r'^api/user_feature/login$', login),
-    path(r'^api/user_feature/register', registration_view),
+    url(r'^api/user_feature$', tutorial_list),
+    url(r'^api/user_feature/(?P<pk>[0-9]+)$', tutorial_detail),
+    url(r'^api/user_feature/login$', login),
+    url(r'^api/user_feature/register', registration_view),
 ]
