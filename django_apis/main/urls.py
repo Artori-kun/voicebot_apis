@@ -34,6 +34,6 @@ urlpatterns = [
     url(r'^api/user_feature$', tutorial_list),
     url(r'^api/user_feature/(?P<pk>[0-9]+)$', tutorial_detail),
     url(r'^api/user_feature/login$', login),
-    url(r'^api/user_feature/login2$', login2),
+    url(r'^api/user_feature/login/(?P<file_name>[a-z0-9_-]+)$', login2),
     url(r'^api/user_feature/register', registration_view),
 ]
