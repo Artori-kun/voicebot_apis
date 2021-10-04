@@ -242,14 +242,16 @@ def check_user(file_data):
     return best_match_user_name, max_similarity
 
 if __name__ == "__main__":
-    # print(record_log_in())
-    record("data/ha2.wav")
-    print(_login('data/ha2.wav'))
+    # record("data/hieu2.wav")
+    # print(_login('data/hieu2.wav'))
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # print(extra_feature("record_file/recording1.wav"))
-    # feature = extra_feature('data/recording.wav')
-    # save_feautures(feature, 'user3', 'saved_feautures/f4.pt')
-    # print(load_all_saved_user())
+    # record("data/hieu.wav")
+    # feature = extra_feature('data/hieu.wav')
+    # save_feautures(feature, 'Hiếu', 'saved_feautures/f5.pt')
+    print(load_all_saved_user())
+    print(extra_feature("data/ha.wav"))
+    print(extra_feature("data/ha.wav").size())
     # match_user, similarity = check_user('data/ha1.wav')
     # print(match_user, similarity)
 
