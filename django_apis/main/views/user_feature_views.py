@@ -68,7 +68,7 @@ def tutorial_list(request):
         tutorials = user_feature.objects.all()
 
         username = request.GET.get('username', None)
-        if user_name is not None:
+        if username is not None:
             tutorials = tutorials.filter(title__icontains=username)
 
         tutorials_serializer = TutorialSerializer(tutorials, many=True)
