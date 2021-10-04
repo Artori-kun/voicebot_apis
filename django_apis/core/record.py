@@ -224,7 +224,7 @@ def check_user(file_data):
     return best_match_user_name, max_similarity
 
 if __name__ == "__main__":
-    print(_login('data/00001.wav'))
+    print(_login('data/00003.wav'))
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # print(extra_feature("record_file/recording1.wav"))
     # feature = extra_feature('record_file/recording1.wav')

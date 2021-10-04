@@ -38,9 +38,9 @@ def registration_view(request):
         tutorial_serializer = TutorialSerializer(data=tutorial_data)
         if tutorial_serializer.is_valid():
             tutorial_serializer.save()
-            user_name = tutorial_serializer.data['user_name']
+            username = tutorial_serializer.data['username']
             vector = tutorial_serializer.data['vector']
-            record_signup(user_name, vector)
+            record_signup(username, vector)
             return JsonResponse(tutorial_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -50,7 +50,7 @@ def registration_view(request):
 def login(request):
     result = record_log_in()
     request.method = 'GET'
-    tutorials = user_feature.objects.filter(user_name=result)
+    tutorials = user_feature.objects.filter(username=result)
     tutorials_serializer = TutorialSerializer(tutorials, many=True)
     return JsonResponse(tutorials_serializer.data, safe=False)
 
@@ -58,7 +58,7 @@ def login(request):
 def login2(request, file_name):
     result = _login(file_name)
     request.method = 'GET'
-    tutorials = user_feature.objects.filter(user_name = result)
+    tutorials = user_feature.objects.filter(username = result)
     tutorials_serializer = TutorialSerializer(tutorials, many=True)
     return JsonResponse(tutorials_serializer.data, safe=False)
 
@@ -67,9 +67,9 @@ def tutorial_list(request):
     if request.method == 'GET':
         tutorials = user_feature.objects.all()
 
-        user_name = request.GET.get('user_name', None)
+        username = request.GET.get('username', None)
         if user_name is not None:
-            tutorials = tutorials.filter(title__icontains=user_name)
+            tutorials = tutorials.filter(title__icontains=username)
 
         tutorials_serializer = TutorialSerializer(tutorials, many=True)
         return JsonResponse(tutorials_serializer.data, safe=False)
