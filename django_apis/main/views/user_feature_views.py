@@ -21,15 +21,12 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
 import numpy as np
-from core.voice_utils import extra_feature
-from core.voice_utils import compare_similarity, compare_feautures
 from mysql.connector import MySQLConnection, Error
 import time
 import torch
 import wave
 import numpy as np
-from core.record import check_user, record_log_in, record_signup, _login
-
+from django_apis.core.record import check_user, record_log_in, record_signup, _login
 
 # signup
 @api_view(['POST'])
