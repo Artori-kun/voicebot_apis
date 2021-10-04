@@ -46,11 +46,11 @@ def record_log_in():
     # Record audio for the given number of seconds
     sd.wait()
     # Convert the NumPy array to audio file
-    wv.write("data/recording1.wav", recording, freq, sampwidth=2)
-    feature = extra_feature('data/recording1.wav')
+    wv.write("data/recording.wav", recording, freq, sampwidth=2)
+    feature = extra_feature('data/recording.wav')
     max_similarity = 0
     match_user = None
-    match_user, similarity = check_user('data/recording1.wav')
+    match_user, similarity = check_user('data/recording.wav')
     if max_similarity >= 0.3:
         result = match_user
     else:
@@ -224,11 +224,12 @@ def check_user(file_data):
     return best_match_user_name, max_similarity
 
 if __name__ == "__main__":
-    print(_login('data/ha1.wav'))
+    # print(record_log_in())
+    print(_login('data/recording.wav'))
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # print(extra_feature("record_file/recording1.wav"))
-    # feature = extra_feature('data/00003.wav')
-    # save_feautures(feature, 'user2', 'saved_feautures/f3.pt')
+    # feature = extra_feature('data/recording.wav')
+    # save_feautures(feature, 'user3', 'saved_feautures/f4.pt')
     # print(load_all_saved_user())
     # match_user, similarity = check_user('data/ha1.wav')
     # print(match_user, similarity)
