@@ -122,13 +122,37 @@ def check_user(file_data):
 
     return best_match_user_name, max_similarity
 
+# xoas DL
+def delete_user(user_name):
+    query = "DELETE FROM tutorials_user_feature WHERE username = %s"
+
+    try:
+        conn = connect()
+
+        # Thực thi câu truy vấn
+        cursor = conn.cursor()
+        cursor.execute(query, (user_name,))
+
+        # Chấp nhận sự thay đổi
+        conn.commit()
+
+    except Error as error:
+        print(error)
+
+    finally:
+        # Đóng kết nối
+        cursor.close()
+        conn.close()
+
+
 if __name__ == "__main__":
+    # delete_user('user4')
     # print(record_log_in())
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
+    # feature = extra_feature('data/00001.wav')
+    # print(feature)
     feature = extra_feature('data/00001.wav')
-    print(feature)
-    # feature2 = extra_feature('data/00002.wav')
-    print(save_feautures(feature, 'user4', 'saved_feautures/f5.pt'))
+    save_feautures(feature, 'user1', 'saved_feautures/f1.pt')
     # print(save_feautures(feature1, 'user1', 'saved_feautures/f2.pt'))
     print(load_all_saved_user())
     # match_user, similarity = check_user('data/00001.wav')
