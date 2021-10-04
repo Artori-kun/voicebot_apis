@@ -11,6 +11,24 @@ import time
 import torch
 import wave
 import numpy as np
+def record(file_name):
+    # Sampling frequency
+    freq = 44100
+
+    # Recording duration
+    duration = 5
+
+    # Start recorder with the given values
+    # of duration and sample frequency
+    recording = sd.rec(int(duration * freq),
+                       samplerate=freq, channels=1)
+
+    # Record audio for the given number of seconds
+    sd.wait()
+    # Convert the NumPy array to audio file
+    wv.write(file_name, recording, freq, sampwidth=2)
+
+
 def  record_signup(user, vector):
     # Sampling frequency
     freq = 44100
@@ -225,7 +243,8 @@ def check_user(file_data):
 
 if __name__ == "__main__":
     # print(record_log_in())
-    print(_login('data/recording.wav'))
+    record("data/ha2.wav")
+    print(_login('data/ha2.wav'))
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # print(extra_feature("record_file/recording1.wav"))
     # feature = extra_feature('data/recording.wav')
