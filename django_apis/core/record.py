@@ -58,6 +58,24 @@ def record_log_in():
     return result
 # record()
 # print(extra_feature("record_file/recording1.wav"))
+def _login(file_name):
+    all_saved_users = load_all_saved_user()
+    to_check_feautures = extra_feature(file_name)
+    best_match_user_name = None
+    max_similarity = 0
+    for user in all_saved_users:
+        user_name = user[1]
+        user_feauture = torch.load(user[2])
+        similar = compare_feautures(to_check_feautures, user_feauture)
+        if similar > max_similarity:
+            max_similarity = similar
+            if max_similarity >= 0.3:
+                best_match_user_name = user_name
+            else:
+                best_match_user_name = None
+
+    return best_match_user_name
+
 def save_wav_channel(fn, wav, channel):
     '''
     Take Wave_read object as an input and save one of its
@@ -206,7 +224,7 @@ def check_user(file_data):
     return best_match_user_name, max_similarity
 
 if __name__ == "__main__":
-    print(record_log_in())
+    print(_login('data/00001.wav'))
     # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # print(extra_feature("record_file/recording1.wav"))
     # feature = extra_feature('record_file/recording1.wav')

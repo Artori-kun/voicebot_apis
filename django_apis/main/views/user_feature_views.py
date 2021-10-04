@@ -27,7 +27,7 @@ import time
 import torch
 import wave
 import numpy as np
-from core.record import check_user, record_log_in, record_signup
+from core.record import check_user, record_log_in, record_signup, _login
 
 
 # signup
@@ -54,6 +54,13 @@ def login(request):
     tutorials_serializer = TutorialSerializer(tutorials, many=True)
     return JsonResponse(tutorials_serializer.data, safe=False)
 
+@api_view(['GET'])
+def login2(request, file_name):
+    result = _login(file_name)
+    request.method = 'GET'
+    tutorials = user_feature.objects.filter(user_name = result)
+    tutorials_serializer = TutorialSerializer(tutorials, many=True)
+    return JsonResponse(tutorials_serializer.data, safe=False)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def tutorial_list(request):
