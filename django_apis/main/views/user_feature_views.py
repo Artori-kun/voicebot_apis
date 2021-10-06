@@ -54,7 +54,7 @@ def login(request):
 
 @api_view(['GET'])
 def login2(request, file_name):
-    resule = _login(file_name)
+    result = _login(file_name)
     request.method = 'GET'
     user = user_feature.objects.filter(username = result)
     user_serializer = User_featureSerializer(user, many=True)
