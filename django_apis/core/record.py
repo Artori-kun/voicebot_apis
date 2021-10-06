@@ -251,7 +251,7 @@ if __name__ == "__main__":
     # save_feautures(feature, 'Hiếu', 'saved_feautures/f5.pt')
     print(load_all_saved_user())
     print(extra_feature("data/ha.wav"))
-    print(extra_feature("data/ha.wav").size())
+    # print(extra_feature("data/ha.wav").size())
     # match_user, similarity = check_user('data/ha1.wav')
     # print(match_user, similarity)
 

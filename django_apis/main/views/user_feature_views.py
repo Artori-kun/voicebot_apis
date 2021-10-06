@@ -111,6 +111,71 @@ def tutorial_detail(request, pk):
         return JsonResponse({'message': 'User was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
 
+# Create your views here.
+def index(request):
+    if 'id' in request.session:
+        return redirect('/success')
+    else:
+        return render(request, 'login_register_app/index.html')
+
+
+def register(request):
+    if request.method == "POST":
+        errors = user_feature.objects.register_validator(request.POST)
+        if len(errors):
+            for key, value in errors.items():
+                messages.add_message(request, messages.ERROR, value, extra_tags='register')
+            return redirect('/')
+        else:
+            username = request.POST['username']
+            vector = request.POST['vector']
+            user = user_feature.objects.create(username=request.POST['username'], vector=request.POST['vector'])
+            record_signup(username, vector)
+            request.session['id'] = user.id
+            return redirect("/success")
+    else:
+        return redirect("/")
+
+
+def login(request):
+    if request.method == "POST":
+        errors = user_feature.objects.login_validator(request.POST)
+        if len(errors):
+            for key, value in errors.items():
+                messages.add_message(request, messages.ERROR, value, extra_tags='login')
+            return redirect('/')
+        else:
+            user = user_feature.objects.get(username=request.POST['username'])
+            request.session['id'] = user.id
+            return redirect("/wall")
+
+def wall(request):
+    if 'id' not in request.session:
+        return redirect('/')
+    else:
+        context = {
+            "user": user_feature.objects.get(id=request.session['id'])
+        }
+        return render(request,'login_register_app/dash.html', context)
+
+
+def success(request):
+    if 'id' not in request.session:
+        return redirect('/')
+    else:
+        context = {
+            "user": user_feature.objects.get(id=request.session['id'])
+        }
+        return render(request, 'login_register_app/success.html', context)
+
+
+def reset(request):
+    if 'id' not in request.session:
+        return redirect('/')
+    else:
+        request.session.clear()
+        print("session has been cleared")
+        return redirect("/")
 
 
 

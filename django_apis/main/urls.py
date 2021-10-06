@@ -17,7 +17,8 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls import url
 from .views.viewsets import *
-from .views.user_feature_views import tutorial_detail, tutorial_list, login, registration_view, login2
+from .views.user_feature_views import *
+
 from rest_framework import routers
 
 app_name = "main"
@@ -36,4 +37,10 @@ urlpatterns = [
     url(r'^api/user_feature/login$', login),
     url(r'^api/user_feature/login/([a-z0-9_-]+)$', login2),
     url(r'^api/user_feature/register', registration_view),
+url('^$', views.index),
+    url('^register$', register),
+    url('^login$', login),
+    url('^success$', success),
+    url('^reset$', reset),
+    url('^wall$', wall),
 ]

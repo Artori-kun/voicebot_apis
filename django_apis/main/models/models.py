@@ -143,7 +143,27 @@ class ScheduleInstanceException(models.Model):
         managed = True
         db_table = 'ScheduleInstanceException'
 
+# Create your models here.
+class UserManager(models.Manager):
+    def register_validator(self, postData):
+        errors = {}
+        # Validation Rules for user_name
+        if len(postData['user_name']) < 1:
+            errors["user_name"] = "First name is required"
+        elif len(postData['user_name']) < 2:
+            errors["user_name"] = "First name should be at least 2 characters"
+        # Validation Rules for vector
+        if len(postData['vector']) < 1:
+            errors["vector"] = "vector is required"
+        elif len(postData['vector']) < 2:
+            errors["vector"] = "vector should be at least 2 characters"
+        return errors
+
 class user_feature(models.Model):
     username = models.CharField(max_length=20, blank=False, default='')
     vector = models.CharField(max_length=200,blank=False, default='')
+    def __repr__(self):
+        return f"<User: {self.id} {self.user_name} {self.vector}>"
+
+    objects = UserManager()
 
