@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <title>Đăng kí người dùng</title>
+</head>
+<body>
+    <div class="container">
+        <div class="body">
+            <h1>Đăng kí thành công! Xin chào {{user.username}}!</h1>
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>Tên người dùng:</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+            </table>
+            
+            <div class="row"></div>
+
+            <p class="d-flex justify-content-end">
+                <a type="button" class="btn btn-warning text-dark" href="/reset">Logout</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

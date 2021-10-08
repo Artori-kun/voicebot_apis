@@ -122,6 +122,7 @@ def connect():
     }
 
     # Biến lưu trữ kết nối
+    conn = None
 
     try:
         conn = MySQLConnection(**db_config)
@@ -130,14 +131,14 @@ def connect():
             return conn
 
     except Error as error:
-        print("Looooi: " + str(error))
+        print(error)
 
-    # return conn
+    return conn
 
 
 def save_feautures(feautures, firstname, lastname, dob , gender, email):
     name = firstname.replace(' ', '') + lastname.replace(' ', '')
-    file_name = f"../saved_feautures/{name}.pt"
+    file_name = f"./saved_feautures/{name}.pt"
     torch.save(feautures, file_name)
     query = "INSERT INTO CustomUser(id, firstname, lastname, dob , gender,email, vector) " \
             "VALUES(%s,%s,%s,%s,%s, %s, %s)"
@@ -195,20 +196,14 @@ def load_all_saved_user():
             list_saved_user.append(row)
             row = cursor.fetchone()
 
-        cursor.close()
-        conn.close()
-
-        return list_saved_user
-
     except Error as e:
         print(e)
 
-    # finally:
-    #     # Đóng kết nối
-    #     cursor.close()
-    #     conn.close()
-    # return list_saved_user
-
+    finally:
+        # Đóng kết nối
+        cursor.close()
+        conn.close()
+    return list_saved_user
 
 # print(feature)
 # save_feautures(feature, 'userman', 'saved_feautures/f4.pt')

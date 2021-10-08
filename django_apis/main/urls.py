@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^api/tutorials/login2', login2),
     url(r'^api/tutorials/register', register),
 
-    url('^$', index),
+    url('index$', index),
     url('^register$', register),
     url('^success$', success),
     url('^reset$', reset),

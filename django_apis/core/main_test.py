@@ -220,7 +220,13 @@ if __name__ == "__main__":
     # save_feautures(feature,"girl","Nguyen","Hong","nguyenhong@gmail.com")
     # match_user, similarity = check_user('data/00002.wav')
     # print(match_user, similarity)
-    delete_user(7)
+    delete_user(17)
+    delete_user(18)
+    delete_user(19)
+    delete_user(20)
+    delete_user(21)
+    delete_user(22)
+    delete_user(23)
     print(load_all_saved_user())
 
 

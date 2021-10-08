@@ -114,7 +114,11 @@ def register(request):
         dob = request.POST['dob']
         gender = request.POST['gender']
         email = request.POST['email']
-        user = CustomUser.objects.create(firstname = request.POST['firstname'],lastname = request.POST['lastname'],dob = request.POST['dob'],gender = request.POST['gender'],email = request.POST['email'])
+        name = firstname.replace(' ', '') + lastname.replace(' ', '')
+        vector = f"saved_feautures/{name}.pt"
+        user = CustomUser.objects.create(firstname=request.POST['firstname'], lastname=request.POST['lastname'],
+                                         dob=request.POST['dob'], gender=request.POST['gender'],
+                                         email=request.POST['email'], vector=vector)
         record_signup(firstname, lastname, dob, gender, email)
         request.session['id'] = user.id
         return redirect("/success")
