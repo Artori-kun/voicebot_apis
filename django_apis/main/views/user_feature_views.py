@@ -11,8 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.viewsets import GenericViewSet
 
-from ..models.models import user_feature
-from ..serializers.serializers import User_featureSerializer
+from ..models.models import CustomUser
+from ..serializers.serializers import CustomUserSerializer
 
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -28,61 +28,46 @@ import wave
 import numpy as np
 from django_apis.core.record import check_user, record_log_in, record_signup, _login
 
-# signup
-@api_view(['POST'])
-def registration_view(request):
-    if request.method == 'POST':
-        user_data = JSONParser().parse(request)
-        user_serializer = User_featureSerializer(data=user_data)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            username = user_serializer.data['username']
-            vector = user_serializer.data['vector']
-            record_signup(username, vector)
-            return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 # Login
-@api_view(['GET'])
-def login(request):
-    result = record_log_in()
-    request.method = 'GET'
-    user = user_feature.objects.filter(username=result)
-    user_serializer = User_featureSerializer(user, many=True)
-    return JsonResponse(user_serializer.data, safe=False)
+@api_view(['POST'])
+def login2(request):
+    audio = request.FILES['wav']
 
-@api_view(['GET'])
-def login2(request, file_name):
-    result = _login(file_name)
-    request.method = 'GET'
-    user = user_feature.objects.filter(username = result)
-    user_serializer = User_featureSerializer(user, many=True)
-    return JsonResponse(user_serializer.data, safe=False)
+    fs = FileSystemStorage(location="data")
+    filename = fs.save(audio.name, audio)
+
+    result = _login(f"data/{audio.name}")
+    try:
+        tutorial = CustomUser.objects.get(id=result)
+        tutorial_serializer = CustomUserSerializer(tutorial)
+        return Response(tutorial_serializer.data, status.HTTP_200_OK)
+    except CustomUser.DoesNotExist:
+        return Response({'message': 'The User does not exist'}, status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 def tutorial_list(request):
     if request.method == 'GET':
-        tutorials = user_feature.objects.all()
+        tutorials = CustomUser.objects.all()
 
         username = request.GET.get('username', None)
         if username is not None:
             tutorials = tutorials.filter(title__icontains=username)
 
-        tutorials_serializer = User_featureSerializer(tutorials, many=True)
+        tutorials_serializer = CustomUserSerializer(tutorials, many=True)
         return JsonResponse(tutorials_serializer.data, safe=False)
         # 'safe=False' for objects serialization
 
     elif request.method == 'POST':
         tutorial_data = JSONParser().parse(request)
-        tutorial_serializer = User_featureSerializer(data=tutorial_data)
+        tutorial_serializer = CustomUserSerializer(data=tutorial_data)
         if tutorial_serializer.is_valid():
             tutorial_serializer.save()
             return JsonResponse(tutorial_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        count = user_feature.objects.all().delete()
+        count = CustomUser.objects.all().delete()
         return JsonResponse({'message': '{} User were deleted successfully!'.format(count[0])},
                             status=status.HTTP_204_NO_CONTENT)
 
@@ -90,17 +75,17 @@ def tutorial_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def tutorial_detail(request, pk):
     try:
-        tutorial = user_feature.objects.get(pk=pk)
+        tutorial = CustomUser.objects.get(pk=pk)
     except user_feature.DoesNotExist:
         return JsonResponse({'message': 'The User does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        tutorial_serializer = User_featureSerializer(tutorial)
+        tutorial_serializer = CustomUserSerializer(tutorial)
         return JsonResponse(tutorial_serializer.data)
 
     elif request.method == 'PUT':
         tutorial_data = JSONParser().parse(request)
-        tutorial_serializer = User_featureSerializer(tutorial, data=tutorial_data)
+        tutorial_serializer = CustomUserSerializer(tutorial, data=tutorial_data)
         if tutorial_serializer.is_valid():
             tutorial_serializer.save()
             return JsonResponse(tutorial_serializer.data)
@@ -113,50 +98,50 @@ def tutorial_detail(request, pk):
 
 # Create your views here.
 def index(request):
-    if 'id' in request.session:
-        return redirect('/success')
-    else:
-        return render(request, 'login_register_app/index.html')
+    # if 'id' in request.session.keys():
+    #     return redirect('/success')
+    # else:
+    #     return render(request, 'login_register_app/index.html')
+    return render(request, 'login_register_app/index.html')
 
 
 def register(request):
     if request.method == "POST":
-        errors = user_feature.objects.register_validator(request.POST)
-        if len(errors):
-            for key, value in errors.items():
-                messages.add_message(request, messages.ERROR, value, extra_tags='register')
-            return redirect('/')
-        else:
-            username = request.POST['username']
-            vector = request.POST['vector']
-            user = user_feature.objects.create(username=request.POST['username'], vector=request.POST['vector'])
-            record_signup(username, vector)
-            request.session['id'] = user.id
-            return redirect("/success")
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        dob = request.POST['dob']
+        gender = request.POST['gender']
+        email = request.POST['email']
+        user = CustomUser.objects.create(firstname = request.POST['firstname'],lastname = request.POST['lastname'],dob = request.POST['dob'],gender = request.POST['gender'],email = request.POST['email'])
+        record_signup(firstname, lastname, dob, gender, email)
+        request.session['id'] = user.id
+        return redirect("/success")
     else:
         return redirect("/")
 
 
 def login(request):
+    # user = CustomUser.objects.get(pk=id)
     if request.method == "POST":
-        errors = user_feature.objects.login_validator(request.POST)
+        errors = CustomUser.objects.login_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
                 messages.add_message(request, messages.ERROR, value, extra_tags='login')
             return redirect('/')
         else:
-            user = user_feature.objects.get(username=request.POST['username'])
+            user = CustomUser.objects.get(username=request.POST['username'])
             request.session['id'] = user.id
             return redirect("/wall")
+
 
 def wall(request):
     if 'id' not in request.session:
         return redirect('/')
     else:
         context = {
-            "user": user_feature.objects.get(id=request.session['id'])
+            "user": CustomUser.objects.get(id=request.session['id'])
         }
-        return render(request,'login_register_app/dash.html', context)
+        return render(request, 'login_register_app/dash.html', context)
 
 
 def success(request):
@@ -164,18 +149,16 @@ def success(request):
         return redirect('/')
     else:
         context = {
-            "user": user_feature.objects.get(id=request.session['id'])
+            "user": CustomUser.objects.get(id=request.session['id'])
         }
         return render(request, 'login_register_app/success.html', context)
 
 
 def reset(request):
+    # user = CustomUser.objects.get(pk=id)
     if 'id' not in request.session:
         return redirect('/')
     else:
         request.session.clear()
         print("session has been cleared")
         return redirect("/")
-
-
-

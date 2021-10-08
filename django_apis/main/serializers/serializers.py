@@ -113,7 +113,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        exclude = ['date_created', 'last_modified']
+        fields = ('id', 'firstname', 'lastname', 'dob' , 'gender', 'email')
 
 
 class ContactSerializer(serializers.ModelSerializer):

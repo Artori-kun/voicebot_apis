@@ -30,17 +30,18 @@ def connect():
     return conn
 
 
-def save_feautures(feautures, user_name, file_name):
+def save_feautures(feautures, user_name, firstname, lastname, email):
+    file_name = "saved_feautures/" + user_name + ".pt"
     torch.save(feautures, file_name)
-    query = "INSERT INTO tutorials_user_feature(id, username, vector) " \
-            "VALUES(%s,%s,%s)"
+    query = "INSERT INTO CustomUser(id, username, firstname, lastname, email, vector) " \
+            "VALUES(%s,%s,%s,%s,%s, %s)"
     all_saved_users = load_all_saved_user()
     max_id = 0
     for user in all_saved_users:
         if user[0] > max_id:
             max_id = user[0]
     id = max_id + 1
-    args = (id, user_name, file_name)
+    args = (id, user_name, firstname, lastname, email, file_name)
     try:
         conn = connect()
         cursor = conn.cursor()
@@ -56,11 +57,12 @@ def save_feautures(feautures, user_name, file_name):
     return args
 
 
+
 def load_features(user_name):
     try:
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM tutorials_user_feature where username = " + "\"" + user_name + "\"")
+        cursor.execute("SELECT * FROM CustomUser where username = " + "\"" + user_name + "\"")
         list_feautures = []
         row = cursor.fetchone()
         while row is not None:
@@ -81,7 +83,7 @@ def load_all_saved_user():
     try:
         conn = connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM tutorials_user_feature")
+        cursor.execute("SELECT * FROM CustomUser")
         list_saved_user = []
         row = cursor.fetchone()
         while row is not None:
@@ -111,7 +113,7 @@ def check_user(file_data):
     max_similarity = 0
     for user in all_saved_users:
         user_name = user[1]
-        user_feauture = torch.load(user[2])
+        user_feauture = torch.load(user[11])
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
@@ -122,16 +124,60 @@ def check_user(file_data):
 
     return best_match_user_name, max_similarity
 
-# xoas DL
-def delete_user(user_name):
-    query = "DELETE FROM tutorials_user_feature WHERE username = %s"
 
+
+# match_user, similarity = check_user('data/00003.wav')
+# print(match_user, similarity)
+
+
+# Test thử
+# conn = connect()
+# print(conn)
+
+
+# Hàm hiển thị danh sách
+def show_user(name):
     try:
         conn = connect()
-
-        # Thực thi câu truy vấn
         cursor = conn.cursor()
-        cursor.execute(query, (user_name,))
+        cursor.execute("SELECT * FROM CustomUser where username = " + "\"" + name + "\"")
+
+        row = cursor.fetchone()
+        print(type(row))
+        print(type(row[1]))
+        array_f = eval(row[1])
+        print(array_f[0][0])
+        # while row is not None:
+        #   print(row)
+        #   row = cursor.fetchone()
+
+    except Error as e:
+        print(e)
+
+    finally:
+        # Đóng kết nối
+        cursor.close()
+        conn.close()
+
+
+# show_user("user1")
+
+# cập nhật DL
+def update_user(name,vector):
+    # Câu lệnh update dữ liệu
+    query = """ UPDATE CustomUser
+              SET vector = %s
+              WHERE username = %s """
+
+    data = (name,vector)
+
+    try:
+        # Kết nối database
+        conn = connect()
+
+        # Cập nhật
+        cursor = conn.cursor()
+        cursor.execute(query, data)
 
         # Chấp nhận sự thay đổi
         conn.commit()
@@ -144,18 +190,40 @@ def delete_user(user_name):
         cursor.close()
         conn.close()
 
+# xoas DL
+def delete_user(id):
+    query = "DELETE FROM CustomUser WHERE id = %s"
+
+    try:
+        conn = connect()
+
+        # Thực thi câu truy vấn
+        cursor = conn.cursor()
+        cursor.execute(query, (id,))
+
+        # Chấp nhận sự thay đổi
+        conn.commit()
+
+    except Error as error:
+        print(error)
+
+    finally:
+        # Đóng kết nối
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
-    # delete_user('user4')
-    # print(record_log_in())
-    # print(record_signup( 'user14', 'saved_feautures/f.pt'))
     # feature = extra_feature('data/00001.wav')
     # print(feature)
-    feature = extra_feature('data/00001.wav')
-    save_feautures(feature, 'user1', 'saved_feautures/f1.pt')
-    # print(save_feautures(feature1, 'user1', 'saved_feautures/f2.pt'))
-    print(load_all_saved_user())
-    # match_user, similarity = check_user('data/00001.wav')
+    # print(feature.size())
+    # print(save_feautures(feature, 'boy1'))
+    # save_feautures(feature,"girl","Nguyen","Hong","nguyenhong@gmail.com")
+    # match_user, similarity = check_user('data/00002.wav')
     # print(match_user, similarity)
+    delete_user(7)
+    print(load_all_saved_user())
+
+
+
 
 

@@ -91,17 +91,19 @@ class Contact(models.Model):
 
 
 class CustomUser(models.Model):
-    username = models.CharField(max_length=20)
-    pass_field = models.CharField(db_column='pass', max_length=16)  # Field renamed because it was a Python reserved
+    username = models.CharField(max_length=20, default=None, null=True)
+    pass_field = models.CharField(db_column='pass', max_length=16, default=None,
+                                  null=True)  # Field renamed because it was a Python reserved
     # word.
     firstname = models.CharField(max_length=50, db_collation='utf8_general_ci')
-    lastname = models.CharField(max_length=50, db_collation='utf8_general_ci', blank=True, null=True)
-    dob = models.DateTimeField(blank=True, null=True)
-    gender = models.CharField(max_length=20, db_collation='utf8_general_ci', blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    last_logged = models.DateTimeField(blank=True, null=True)
-    date_created = models.DateTimeField(default=now)
+    lastname = models.CharField(max_length=50, db_collation='utf8_general_ci', blank=True)
+    dob = models.DateTimeField(blank=True)
+    gender = models.CharField(max_length=20, db_collation='utf8_general_ci')
+    email = models.CharField(max_length=100, blank=True)
+    last_logged = models.DateTimeField(blank=True, default=None, null=True)
+    date_created = models.DateTimeField(default=now())
     is_active = models.BooleanField(default=True)
+    vector = models.CharField(max_length=200)
 
     class Meta:
         managed = True
@@ -159,11 +161,5 @@ class UserManager(models.Manager):
             errors["vector"] = "vector should be at least 2 characters"
         return errors
 
-class user_feature(models.Model):
-    username = models.CharField(max_length=20, blank=False, default='')
-    vector = models.CharField(max_length=200,blank=False, default='')
-    def __repr__(self):
-        return f"<User: {self.id} {self.user_name} {self.vector}>"
 
-    objects = UserManager()
 
