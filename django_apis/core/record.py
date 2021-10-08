@@ -4,8 +4,8 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
 import numpy as np
-from django_apis.core.voice_utils import extra_feature
-from django_apis.core.voice_utils import compare_similarity, compare_feautures
+from core.voice_utils import extra_feature
+from core.voice_utils import compare_similarity, compare_feautures
 from mysql.connector import MySQLConnection, Error
 import time
 import torch
@@ -240,6 +240,6 @@ if __name__ == "__main__":
     # print(feature.size())
     # print(save_feautures(feature, 'boy1'))
     print(load_all_saved_user())
-    # print(_login('data/00003.wav'))
-    # match_user, similarity = check_user('data/00002.wav')
+    print(_login('data/00001.wav'))
+    # match_user, similarity = check_user('data/00001.wav')
     # print(match_user, similarity)

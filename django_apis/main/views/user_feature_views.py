@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render, redirect
 
 from django.http.response import JsonResponse
 from rest_framework.mixins import CreateModelMixin
@@ -21,14 +22,15 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
 import numpy as np
-from mysql.connector import MySQLConnection, Error
+# from mysql.connector import MySQLConnection, Error
 import time
 import torch
 import wave
 import numpy as np
-from django_apis.core.record import check_user, record_log_in, record_signup, _login
-
 # Login
+from core.record import _login, record_signup, record_log_in
+
+
 @api_view(['POST'])
 def login2(request):
     audio = request.FILES['wav']
@@ -76,7 +78,7 @@ def tutorial_list(request):
 def tutorial_detail(request, pk):
     try:
         tutorial = CustomUser.objects.get(pk=pk)
-    except user_feature.DoesNotExist:
+    except CustomUser.DoesNotExist:
         return JsonResponse({'message': 'The User does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -118,20 +120,6 @@ def register(request):
         return redirect("/success")
     else:
         return redirect("/")
-
-
-def login(request):
-    # user = CustomUser.objects.get(pk=id)
-    if request.method == "POST":
-        errors = CustomUser.objects.login_validator(request.POST)
-        if len(errors):
-            for key, value in errors.items():
-                messages.add_message(request, messages.ERROR, value, extra_tags='login')
-            return redirect('/')
-        else:
-            user = CustomUser.objects.get(username=request.POST['username'])
-            request.session['id'] = user.id
-            return redirect("/wall")
 
 
 def wall(request):

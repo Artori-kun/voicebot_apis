@@ -1,8 +1,8 @@
 # import torch
 import torch.nn as nn
 # import core.loss.softmax as softmax
-import django_apis.core.loss.softmax as softmax
-import django_apis.core.loss.angleproto as angleproto
+import core.loss.softmax as softmax
+import core.loss.angleproto as angleproto
 
 
 class LossFunction(nn.Module):

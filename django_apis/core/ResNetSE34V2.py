@@ -2,7 +2,7 @@ import torch
 import torchaudio
 import torch.nn as nn
 import torch.nn.functional as F
-from django_apis.core.ResNetBlocks import SEBasicBlock
+from core.ResNetBlocks import SEBasicBlock
 
 class PreEmphasis(torch.nn.Module):
     def __init__(self, coef: float = 0.97):

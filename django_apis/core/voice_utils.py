@@ -1,6 +1,6 @@
 import argparse
 
-from django_apis.core.models import SpeakerNet
+from core.models import SpeakerNet
 
 parser = argparse.ArgumentParser(description="SpeakerNet")
 # Training details
@@ -26,7 +26,7 @@ args, _ = parser.parse_known_args()
 # load model
 model = SpeakerNet(**vars(args))
 
-model.loadParameters("model000000440.model")
+model.loadParameters("core/model000000440.model")
 model.eval()
 
 

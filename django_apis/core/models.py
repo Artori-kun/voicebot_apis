@@ -7,9 +7,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from scipy.io import wavfile
 
-from django_apis.core.ResNetSE34V2 import MainModel
-import django_apis.core.constant as c
-from django_apis.core.loss.softmaxproto import LossFunction
+from core.ResNetSE34V2 import MainModel
+import core.constant as c
+from core.loss.softmaxproto import LossFunction
 
 def loadWAV(filename, max_frames, evalmode=True, num_eval=10):
     # Maximum audio length

@@ -17,7 +17,8 @@ Including another URLconf
 from django.urls import path, include
 from django.conf.urls import url
 from .views.viewsets import *
-from .views.user_feature_views import *
+from .views.user_feature_views import login2, tutorial_detail, tutorial_list, index, register, wall, success, reset
+
 
 from rest_framework import routers
 
@@ -34,14 +35,12 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^api/tutorials$', tutorial_list),
     url(r'^api/tutorials/(?P<pk>[0-9]+)$', tutorial_detail),
-    url(r'^api/tutorials/login$', login),
     url(r'^api/tutorials/login2', login2),
-    url(r'^api/tutorials/register', registration_view),
+    url(r'^api/tutorials/register', register),
 
-    url('^$', views.index),
-    url('^register$', views.register),
-    url('^login$', views.login),
-    url('^success$', views.success),
-    url('^reset$', views.reset),
-    url('^wall$', views.wall),
+    url('^$', index),
+    url('^register$', register),
+    url('^success$', success),
+    url('^reset$', reset),
+    url('^wall$', wall),
 ]
