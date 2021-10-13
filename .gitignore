@@ -6,3 +6,6 @@ django_apis/saved_feautures/
 model000000440.model/
 data/
 saved_feautures/
+django_apis/main/templates/images/
+django_apis/main/templates/css/fonts/
+

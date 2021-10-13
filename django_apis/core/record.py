@@ -138,7 +138,7 @@ def connect():
 
 def save_feautures(feautures, firstname, lastname, dob , gender, email):
     name = firstname.replace(' ', '') + lastname.replace(' ', '')
-    file_name = f"./saved_feautures/{name}.pt"
+    file_name = f"saved_feautures/{name}.pt"
     torch.save(feautures, file_name)
     query = "INSERT INTO CustomUser(id, firstname, lastname, dob , gender,email, vector) " \
             "VALUES(%s,%s,%s,%s,%s, %s, %s)"
