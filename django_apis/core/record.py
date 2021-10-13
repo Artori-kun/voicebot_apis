@@ -51,7 +51,7 @@ def record_log_in():
     max_similarity = 0
     match_user = None
     match_user, similarity = check_user('record_file/recording1.wav')
-    if max_similarity >= 0.3:
+    if max_similarity >= 0.35:
         result = match_user
     else:
         result = None
@@ -72,7 +72,7 @@ def _login(file_name):
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
-            if max_similarity >= 0.4:
+            if max_similarity >= 0.35:
                 best_match_id = id
             else:
                 best_match_id = 0
@@ -223,7 +223,7 @@ def check_user(file_data):
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
-            if max_similarity >= 0.4:
+            if max_similarity >= 0.35:
                 best_match_id = user_name
             else:
                 best_match_id = 0
