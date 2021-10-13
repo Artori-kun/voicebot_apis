@@ -117,7 +117,7 @@ def check_user(file_data):
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
-            if max_similarity >= 0.3:
+            if max_similarity >= 0.4:
                 best_match_user_name = user_name
             else:
                 best_match_user_name = None

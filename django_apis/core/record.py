@@ -72,7 +72,7 @@ def _login(file_name):
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
-            if max_similarity >= 0.3:
+            if max_similarity >= 0.4:
                 best_match_id = id
             else:
                 best_match_id = 0
@@ -223,7 +223,7 @@ def check_user(file_data):
         similar = compare_feautures(to_check_feautures, user_feauture)
         if similar > max_similarity:
             max_similarity = similar
-            if max_similarity >= 0.3:
+            if max_similarity >= 0.4:
                 best_match_id = user_name
             else:
                 best_match_id = 0
